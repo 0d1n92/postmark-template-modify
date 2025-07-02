@@ -1,0 +1,14 @@
+{
+  "name": "progetto-postamark",
+  "version": "1.0.0",
+  "description": "Tool per scaricare e caricare template e layout da Postmark via API.",
+  "main": "postmark-tool.js",
+  "scripts": {
+    "download": "node postmark-tool.js download",
+    "upload": "node postmark-tool.js upload"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.5"
+  }
+} 
