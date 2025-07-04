@@ -1,10 +1,67 @@
-# Postmark Template & Layout Manager
+# Postmark Template Tool
 
-Uno script Node.js per scaricare, modificare e caricare template e layout di Postmark senza passare dall'interfaccia web.
+Questo strumento permette di scaricare e caricare template da Postmark tramite API.
+
+## Nuova struttura dei template
+
+Quando scarichi i template (`download`), ciascun template viene salvato in una cartella dedicata dentro la cartella `templates/`.
+
+**Esempio:**
+
+```
+templates/
+  NomeTemplate1/
+    template.json
+    template.html
+  NomeTemplate2/
+    template.json
+    template.html
+```
+
+- `template.json`: contiene tutti i dati del template in formato JSON
+- `template.html`: contiene il corpo HTML del template
+
+> **Nota:** Il file `.txt` (TextBody) non viene più salvato.
+
+## Comandi
+
+- Scarica tutti i template:
+  ```
+  node postmark-tool.js download
+  ```
+- Scarica un solo template:
+  ```
+  node postmark-tool.js download NOME_TEMPLATE
+  ```
+- Carica tutti i template:
+  ```
+  node postmark-tool.js upload
+  ```
+- Carica un solo template:
+  ```
+  node postmark-tool.js upload NOME_TEMPLATE_SANIFICATO
+  ```
+- **Anteprima di un template nel browser:**
+  ```
+  node postmark-tool.js preview NOME_TEMPLATE_SANIFICATO
+  ```
+  Si aprirà automaticamente il browser all'indirizzo `http://localhost:4321` con l'anteprima del template HTML.
+- **Apri il template su Postmark nel browser:**
+  ```
+  node postmark-tool.js open NOME_TEMPLATE_SANIFICATO
+  ```
+  Si aprirà la pagina di modifica del template direttamente su Postmark, usando il TemplateId e il tuo SERVER_ID.
 
 ## Requisiti
-- Node.js (v16+)
-- Un account Postmark con accesso API
+
+- Node.js
+- Un file `.env` con le variabili:
+  - `POSTMARK_SERVER_TOKEN`
+  - `POSTMARK_SERVER_ID`
+- Per la funzione di anteprima e apertura browser, assicurati di avere installato il pacchetto `open`:
+  ```
+  npm install open
+  ```
 
 ## Installazione
 1. **Clona o copia questo progetto in una cartella dedicata:**
@@ -26,35 +83,6 @@ Uno script Node.js per scaricare, modificare e caricare template e layout di Pos
      POSTMARK_SERVER_TOKEN=la-tua-api-key
      POSTMARK_SERVER_ID=il-tuo-server-id
      ```
-
-## Utilizzo
-
-### Scaricare tutti i template
-Scarica tutti i template dal server Postmark e li salva nella cartella `templates/`:
-```sh
-node postmark-tool.js download
-```
-
-#### Scaricare un solo template specifico
-```sh
-node postmark-tool.js download NOME_TEMPLATE
-```
-
-### Modificare i template
-- I template sono nella cartella `templates/`.
-- Puoi modificare i file `.html` e `.txt` direttamente da VSCode.
-
-### Caricare (upload) template modificati
-Esegue prima un backup automatico dei file attuali in `templates/` (cartella `backup/`), poi aggiorna i template su Postmark:
-```sh
-node postmark-tool.js upload
-```
-
-#### Caricare solo un template specifico
-```sh
-node postmark-tool.js upload template-NOME
-```
-Sostituisci `template-NOME` con il nome base del file (senza estensione).
 
 ### Backup
 - Prima di ogni upload viene creato un backup automatico dei file attuali in una sottocartella di `backup/` con timestamp.

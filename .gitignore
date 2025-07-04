@@ -28,6 +28,6 @@ yarn-error.log*
 
 # Templates output (non necessario, ma se vuoi ignorare i file generati)
 templates/
-
+templates.old/
 .history/
 .lh/
