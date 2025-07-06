@@ -8,7 +8,7 @@ const open = (...args) => import('open').then(mod => mod.default(...args));
 
 const API_TOKEN = process.env.POSTMARK_SERVER_TOKEN;
 const SERVER_ID = process.env.POSTMARK_SERVER_ID;
-const SERVER_NAME = process.env.POSTMARK_SERVER_NAME || 'DT-domnia'; // Nome del server per i backup
+const SERVER_NAME = process.env.POSTMARK_SERVER_NAME || 'default' ; // Nome del server per i backup
 const BASE_URL = 'https://api.postmarkapp.com';
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
 const LAYOUTS_DIR = path.join(__dirname, 'layout');
