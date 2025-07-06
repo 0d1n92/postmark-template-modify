@@ -1,13 +1,12 @@
 # Postmark Template Modify
 
-This tool allows you to download and upload templates from Postmark via API.
+This tool allows you to download and upload templates and layouts from Postmark via API.
 
-## 🗂️ New Template Structure
+## 🗂️ Template Structure
 
-When you download templates (`download`), each template is saved in its own folder inside the `templates/` directory.
+When you download templates (`download`) or layouts (`download-layouts`), each template/layout is saved in its own folder.
 
-**Example:**
-
+**Template Structure:**
 ```
 templates/
   TemplateName1/
@@ -18,13 +17,25 @@ templates/
     template.html
 ```
 
-- `template.json`: contains all the template data in JSON format  
-- `template.html`: contains the HTML body of the template
+**Layout Structure:**
+```
+layout/
+  LayoutName1/
+    layout.json
+    layout.html
+  LayoutName2/
+    layout.json
+    layout.html
+```
+
+- `template.json`/`layout.json`: contains all the template/layout data in JSON format  
+- `template.html`/`layout.html`: contains the HTML body of the template/layout
 
 > **Note:** The `.txt` file (TextBody) is no longer saved.
 
 ## ⚙️ Commands
 
+### Template Commands
 - Download all templates:
   ```
   node postmark-tool.js download
@@ -33,25 +44,53 @@ templates/
   ```
   node postmark-tool.js download TEMPLATE_NAME
   ```
-- Upload all templates:
+- Upload all templates and layouts:
   ```
   node postmark-tool.js upload
   ```
 - Upload a single template:
   ```
-  node postmark-tool.js upload SANITIZED_TEMPLATE_NAME
+  node postmark-tool.js upload TEMPLATE_NAME
   ```
-- **Preview a template in the browser:**
+- Preview a template in the browser:
   ```
-  node postmark-tool.js preview SANITIZED_TEMPLATE_NAME
+  node postmark-tool.js preview TEMPLATE_NAME
   ```
   This will automatically open your browser at `http://localhost:4321` with a preview of the HTML template.
 
-- **Open the template on Postmark in the browser:**
+- Open the template on Postmark in the browser:
   ```
-  node postmark-tool.js open SANITIZED_TEMPLATE_NAME
+  node postmark-tool.js open TEMPLATE_NAME
   ```
   This will open the template edit page directly on Postmark using the TemplateId and your SERVER_ID.
+
+### Layout Commands
+- Download all layouts:
+  ```
+  node postmark-tool.js download-layouts
+  ```
+- Download a single layout:
+  ```
+  node postmark-tool.js download-layouts LAYOUT_NAME
+  ```
+- Preview a layout in the browser:
+  ```
+  node postmark-tool.js preview-layout LAYOUT_NAME
+  ```
+  This will automatically open your browser at `http://localhost:4322` with a preview of the HTML layout.
+
+- Open the layout on Postmark in the browser:
+  ```
+  node postmark-tool.js open-layout LAYOUT_NAME
+  ```
+  This will open the layout edit page directly on Postmark using the TemplateId and your SERVER_ID.
+
+### Utility Commands
+- Manual backup:
+  ```
+  node postmark-tool.js backup
+  ```
+  Creates a backup of all templates and layouts with timestamp.
 
 ## 📦 Requirements
 
@@ -59,6 +98,7 @@ templates/
 - A `.env` file with the following variables:
   - `POSTMARK_SERVER_TOKEN`
   - `POSTMARK_SERVER_ID`
+  - `POSTMARK_SERVER_NAME` (optional, defaults to 'default')
 - For the preview and browser opening features, make sure the `open` package is installed:
   ```
   npm install open
@@ -84,16 +124,35 @@ templates/
      ```env
      POSTMARK_SERVER_TOKEN=your-api-key
      POSTMARK_SERVER_ID=your-server-id
+     POSTMARK_SERVER_NAME=your-server-name
      ```
 
-## 🛡️ Backup
+## 🛡️ Backup System
 
-- Before each upload, an automatic backup of the current files is created in a `backup/` subfolder with a timestamp.
-- You can recover previous versions of templates from there in case of errors.
+- Before each upload, an automatic backup of the current files is created in `backup/SERVER_NAME/timestamp/`
+- The backup includes both templates and layouts
+- You can recover previous versions of templates and layouts from there in case of errors
+- Manual backups can be created using the `backup` command
+
+**Backup Structure:**
+```
+backup/
+  SERVER_NAME/
+    2024-01-15T10-30-45-123Z/
+      templates/
+        TemplateName1/
+          template.json
+          template.html
+      layouts/
+        LayoutName1/
+          layout.json
+          layout.html
+```
 
 ## 🧩 Managing Multiple Postmark Servers
 
-- You can copy the tool folder for each different server, or change the values in the `.env` file before each operation.
+- You can copy the tool folder for each different server, or change the values in the `.env` file before each operation
+- Each server's backups are stored separately using the `POSTMARK_SERVER_NAME` environment variable
 
 ## 🔐 Security Notes
 
@@ -104,17 +163,17 @@ templates/
 
 If you have problems, suggestions, or requests, open an issue or contact the developer.
 
+---
 
-# Postmark Template modify
+# Postmark Template Modify
 
-Questo strumento permette di scaricare e caricare template da Postmark tramite API.
+Questo strumento permette di scaricare e caricare template e layout da Postmark tramite API.
 
-## Nuova struttura dei template
+## Struttura dei Template
 
-Quando scarichi i template (`download`), ciascun template viene salvato in una cartella dedicata dentro la cartella `templates/`.
+Quando scarichi i template (`download`) o i layout (`download-layouts`), ciascun template/layout viene salvato in una cartella dedicata.
 
-**Esempio:**
-
+**Struttura Template:**
 ```
 templates/
   NomeTemplate1/
@@ -125,13 +184,25 @@ templates/
     template.html
 ```
 
-- `template.json`: contiene tutti i dati del template in formato JSON
-- `template.html`: contiene il corpo HTML del template
+**Struttura Layout:**
+```
+layout/
+  NomeLayout1/
+    layout.json
+    layout.html
+  NomeLayout2/
+    layout.json
+    layout.html
+```
+
+- `template.json`/`layout.json`: contiene tutti i dati del template/layout in formato JSON
+- `template.html`/`layout.html`: contiene il corpo HTML del template/layout
 
 > **Nota:** Il file `.txt` (TextBody) non viene più salvato.
 
 ## Comandi
 
+### Comandi Template
 - Scarica tutti i template:
   ```
   node postmark-tool.js download
@@ -140,24 +211,53 @@ templates/
   ```
   node postmark-tool.js download NOME_TEMPLATE
   ```
-- Carica tutti i template:
+- Carica tutti i template e layout:
   ```
   node postmark-tool.js upload
   ```
 - Carica un solo template:
   ```
-  node postmark-tool.js upload NOME_TEMPLATE_SANIFICATO
+  node postmark-tool.js upload NOME_TEMPLATE
   ```
-- **Anteprima di un template nel browser:**
+- Anteprima di un template nel browser:
   ```
-  node postmark-tool.js preview NOME_TEMPLATE_SANIFICATO
+  node postmark-tool.js preview NOME_TEMPLATE
   ```
   Si aprirà automaticamente il browser all'indirizzo `http://localhost:4321` con l'anteprima del template HTML.
-- **Apri il template su Postmark nel browser:**
+
+- Apri il template su Postmark nel browser:
   ```
-  node postmark-tool.js open NOME_TEMPLATE_SANIFICATO
+  node postmark-tool.js open NOME_TEMPLATE
   ```
   Si aprirà la pagina di modifica del template direttamente su Postmark, usando il TemplateId e il tuo SERVER_ID.
+
+### Comandi Layout
+- Scarica tutti i layout:
+  ```
+  node postmark-tool.js download-layouts
+  ```
+- Scarica un solo layout:
+  ```
+  node postmark-tool.js download-layouts NOME_LAYOUT
+  ```
+- Anteprima di un layout nel browser:
+  ```
+  node postmark-tool.js preview-layout NOME_LAYOUT
+  ```
+  Si aprirà automaticamente il browser all'indirizzo `http://localhost:4322` con l'anteprima del layout HTML.
+
+- Apri il layout su Postmark nel browser:
+  ```
+  node postmark-tool.js open-layout NOME_LAYOUT
+  ```
+  Si aprirà la pagina di modifica del layout direttamente su Postmark, usando il TemplateId e il tuo SERVER_ID.
+
+### Comandi Utility
+- Backup manuale:
+  ```
+  node postmark-tool.js backup
+  ```
+  Crea un backup di tutti i template e layout con timestamp.
 
 ## Requisiti
 
@@ -165,12 +265,14 @@ templates/
 - Un file `.env` con le variabili:
   - `POSTMARK_SERVER_TOKEN`
   - `POSTMARK_SERVER_ID`
+  - `POSTMARK_SERVER_NAME` (opzionale, default: 'default')
 - Per la funzione di anteprima e apertura browser, assicurati di avere installato il pacchetto `open`:
   ```
   npm install open
   ```
 
 ## Installazione
+
 1. **Clona o copia questo progetto in una cartella dedicata:**
    ```sh
    git clone <repo-url> postmark-manager
@@ -189,19 +291,42 @@ templates/
      ```env
      POSTMARK_SERVER_TOKEN=la-tua-api-key
      POSTMARK_SERVER_ID=il-tuo-server-id
+     POSTMARK_SERVER_NAME=nome-del-tuo-server
      ```
 
-### Backup
-- Prima di ogni upload viene creato un backup automatico dei file attuali in una sottocartella di `backup/` con timestamp.
-- Puoi recuperare versioni precedenti dei template da lì in caso di errore.
+## Sistema di Backup
 
-### Gestione di più server Postmark
-- Puoi copiare la cartella del tool per ogni server diverso, oppure cambiare i valori nel file `.env` prima di ogni operazione.
+- Prima di ogni upload viene creato un backup automatico dei file attuali in `backup/NOME_SERVER/timestamp/`
+- Il backup include sia template che layout
+- Puoi recuperare versioni precedenti di template e layout da lì in caso di errore
+- I backup manuali possono essere creati usando il comando `backup`
 
-### Note di sicurezza
+**Struttura Backup:**
+```
+backup/
+  NOME_SERVER/
+    2024-01-15T10-30-45-123Z/
+      templates/
+        NomeTemplate1/
+          template.json
+          template.html
+      layouts/
+        NomeLayout1/
+          layout.json
+          layout.html
+```
+
+## Gestione di più server Postmark
+
+- Puoi copiare la cartella del tool per ogni server diverso, oppure cambiare i valori nel file `.env` prima di ogni operazione
+- I backup di ogni server sono memorizzati separatamente usando la variabile d'ambiente `POSTMARK_SERVER_NAME`
+
+## Note di sicurezza
+
 - **Non condividere il file `.env`**: contiene la tua API key!
 - I backup sono solo locali e non vengono mai inviati a Postmark.
 
-### Problemi o richieste
-Se hai problemi, suggerimenti o richieste, apri una issue o contatta lo sviluppatore. 
+## Problemi o richieste
+
+Se hai problemi, suggerimenti o richieste, apri una issue o contatta lo sviluppatore.
 
