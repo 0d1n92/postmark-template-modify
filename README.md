@@ -1,4 +1,111 @@
-# Postmark Template Tool
+# Postmark Template Modify
+
+This tool allows you to download and upload templates from Postmark via API.
+
+## 🗂️ New Template Structure
+
+When you download templates (`download`), each template is saved in its own folder inside the `templates/` directory.
+
+**Example:**
+
+```
+templates/
+  TemplateName1/
+    template.json
+    template.html
+  TemplateName2/
+    template.json
+    template.html
+```
+
+- `template.json`: contains all the template data in JSON format  
+- `template.html`: contains the HTML body of the template
+
+> **Note:** The `.txt` file (TextBody) is no longer saved.
+
+## ⚙️ Commands
+
+- Download all templates:
+  ```
+  node postmark-tool.js download
+  ```
+- Download a single template:
+  ```
+  node postmark-tool.js download TEMPLATE_NAME
+  ```
+- Upload all templates:
+  ```
+  node postmark-tool.js upload
+  ```
+- Upload a single template:
+  ```
+  node postmark-tool.js upload SANITIZED_TEMPLATE_NAME
+  ```
+- **Preview a template in the browser:**
+  ```
+  node postmark-tool.js preview SANITIZED_TEMPLATE_NAME
+  ```
+  This will automatically open your browser at `http://localhost:4321` with a preview of the HTML template.
+
+- **Open the template on Postmark in the browser:**
+  ```
+  node postmark-tool.js open SANITIZED_TEMPLATE_NAME
+  ```
+  This will open the template edit page directly on Postmark using the TemplateId and your SERVER_ID.
+
+## 📦 Requirements
+
+- Node.js
+- A `.env` file with the following variables:
+  - `POSTMARK_SERVER_TOKEN`
+  - `POSTMARK_SERVER_ID`
+- For the preview and browser opening features, make sure the `open` package is installed:
+  ```
+  npm install open
+  ```
+
+## 🚀 Installation
+
+1. **Clone or copy this project into a dedicated folder:**
+   ```sh
+   git clone <repo-url> postmark-manager
+   cd postmark-manager
+   ```
+   Or create a folder and copy the files manually.
+
+2. **Install dependencies:**
+   ```sh
+   npm install
+   ```
+
+3. **Configure environment variables:**
+   - Rename `.env.example` to `.env`
+   - Add your Postmark API key and server ID:
+     ```env
+     POSTMARK_SERVER_TOKEN=your-api-key
+     POSTMARK_SERVER_ID=your-server-id
+     ```
+
+## 🛡️ Backup
+
+- Before each upload, an automatic backup of the current files is created in a `backup/` subfolder with a timestamp.
+- You can recover previous versions of templates from there in case of errors.
+
+## 🧩 Managing Multiple Postmark Servers
+
+- You can copy the tool folder for each different server, or change the values in the `.env` file before each operation.
+
+## 🔐 Security Notes
+
+- **Do not share the `.env` file**: it contains your API key!
+- Backups are local only and are never sent to Postmark.
+
+## 🙋 Issues or Requests
+
+If you have problems, suggestions, or requests, open an issue or contact the developer.
+
+
+# Postmark Template modify
 
 Questo strumento permette di scaricare e caricare template da Postmark tramite API.
 
@@ -97,3 +204,4 @@ templates/
 
 ### Problemi o richieste
 Se hai problemi, suggerimenti o richieste, apri una issue o contatta lo sviluppatore. 
+
