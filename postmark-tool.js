@@ -342,7 +342,7 @@ async function openLayoutOnPostmark(layoutName) {
   open(url);
 }
 
-async function testBackup() {
+async function manualBackup() {
   console.log('Testando la funzione di backup...');
   await backupTemplates();
   console.log('Test backup completato!');
@@ -371,8 +371,8 @@ async function main() {
   } else if (cmd === 'open-layout') {
     const layoutName = process.argv[3];
     await openLayoutOnPostmark(layoutName);
-  } else if (cmd === 'test-backup') {
-    await testBackup();
+  } else if (cmd === 'backup') {
+    await manualBackup();
   } else {
     console.log('Comandi disponibili:');
     console.log('  Template:');
@@ -390,7 +390,7 @@ async function main() {
     console.log('    node postmark-tool.js open-layout NOME_LAYOUT     # apre layout su Postmark');
     console.log('');
     console.log('  Test:');
-    console.log('    node postmark-tool.js test-backup                 # testa la funzione di backup');
+    console.log('    node postmark-tool.js backup                 # manual backup');
     console.log('');
     console.log('Note:');
     console.log('  - I backup vengono salvati in backup/SERVER_NAME/timestamp/');
